@@ -10,6 +10,9 @@ CONTAINER_NAME="sandbox_ubuntu"
 # コンテナが既に起動しているかを確認
 if docker ps -a --format "{{.Names}}" | grep -q "^${CONTAINER_NAME}$"; then
   echo "Container '${CONTAINER_NAME}' is already running."
+  if docker ps -f status=exited --format "{{.Names}}" | grep -q "^${CONTAINER_NAME}$"; then
+    docker start "${CONTAINER_NAME}"
+  fi
 else
   # コンテナを起動
   docker run -d --name "${CONTAINER_NAME}" "${IMAGE_NAME}:${IMAGE_TAG}"
