@@ -20,4 +20,4 @@ else
 fi
 
 # コンテナ接続
-docker exec -it -u soragami ${CONTAINER_NAME} /bin/bash
+docker exec -it -u soragami ${CONTAINER_NAME} bash -c "cd ~ && bash"
