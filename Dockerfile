@@ -13,4 +13,4 @@ COPY ./files /home/soragami/
 
 USER soragami
 
-CMD [ "/bin/bash" ]
+CMD [ "sleep", "infinity" ]

@@ -6,5 +6,8 @@ PASSWORD=$(cat .env | grep PASSWORD= | cut -d '=' -f2)
 # Dockerイメージをビルドするコマンド
 docker build --build-arg PASSWORD=${PASSWORD} -t my_ubuntu_image .
 
-# スクリプトの終了
-exit 0
+# コンテナ起動
+docker run -d --name "soragami_ubuntu" my_ubuntu_image
+
+# コンテナ接続
+docker exec -it soragami_ubuntu
