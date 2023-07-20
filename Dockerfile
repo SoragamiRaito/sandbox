@@ -1,18 +1,15 @@
 # BaseImage : ubunutu:22.04
 FROM ubuntu:22.04
 
-# set workdir
-WORKDIR /home/soragami/
-
-# add user
-RUN useradd -m -p soragami soragami
-
 # update and install packages
-RUN apt update && apt upgrade
-RUN apt install -y git && apt autoremove
+RUN apt update
+RUN apt install -y git && apt install sudo
+
+# add user and 
+RUN useradd -m sandbox && echo "sandbox:password" | chpasswd && usermod -aG sudo sandbox 
 
 # copy files
-COPY ./files/ /home/soragami/
+COPY ./files/ /home/sandbox/
 
 # using "sleep infinity" for container persistence
 CMD [ "sleep", "infinity" ]
