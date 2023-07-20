@@ -1,15 +1,12 @@
+# BaseImage : ubunutu:22.04
 FROM ubuntu:22.04
 
-ARG PASSWORD
-ENV PASSWORD=${PASSWORD}
-
+# apdate and add user
 RUN apt update && apt upgrade
-RUN useradd -m soragami && echo "soragami:{PASSWORD}" | chpasswd
+RUN useradd -m -p soragami soragami
 
-WORKDIR /home/soragami
+# copy files
+COPY ./files/ /home/soragami/
 
-COPY ./files /home/soragami/
-
-USER soragami
-
+# using "sleep infinity" for container persistence
 CMD [ "sleep", "infinity" ]
