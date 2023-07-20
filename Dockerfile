@@ -9,7 +9,7 @@ RUN useradd -m -p soragami soragami
 
 # update and install packages
 RUN apt update && apt upgrade
-RUN apt install git
+RUN apt install -y git && apt autoremove
 
 # copy files
 COPY ./files/ /home/soragami/
