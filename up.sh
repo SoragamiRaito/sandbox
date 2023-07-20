@@ -1,14 +1,11 @@
 #!/bin/bash
 
 # Dockerイメージの名前とタグ
-IMAGE_NAME="my_ubuntu_image"
+IMAGE_NAME="sandbox_ubuntu_image"
 IMAGE_TAG="latest"
 
-# イメージのビルド
-docker build -t "${IMAGE_NAME}:${IMAGE_TAG}" .
-
 # コンテナの名前
-CONTAINER_NAME="soragami_ubuntu"
+CONTAINER_NAME="sandbox_ubuntu"
 
 # コンテナが既に起動しているかを確認
 if docker ps -a --format "{{.Names}}" | grep -q "^${CONTAINER_NAME}$"; then
@@ -20,4 +17,4 @@ else
 fi
 
 # コンテナ接続
-docker exec -it -u soragami ${CONTAINER_NAME} bash -c "cd ~ && bash"
+docker exec -it -u sandbox ${CONTAINER_NAME} bash -c "cd ~ && bash"
