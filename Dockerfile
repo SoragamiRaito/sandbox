@@ -2,14 +2,10 @@
 FROM ubuntu:22.04
 
 # update and install packages
-RUN apt update
-RUN apt install -y git && apt install sudo
+RUN apt update && apt upgrade
 
 # add user and 
-RUN useradd -m sandbox && echo "sandbox:password" | chpasswd && usermod -aG sudo sandbox 
-
-# copy files
-COPY ./files/ /home/sandbox/
+#RUN useradd -m sandbox && echo "sandbox:password" | chpasswd && usermod -aG sudo sandbox 
 
 # using "sleep infinity" for container persistence
 CMD [ "sleep", "infinity" ]
