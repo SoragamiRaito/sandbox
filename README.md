@@ -1,6 +1,6 @@
 # sandbox
 
-砂場。  
+砂場。
 なんとなくお試しでいろいろやって見る場所。
 ちゃんとdocker使っていきたいとは思っている。
 
@@ -22,7 +22,7 @@
 
 - コンテナに接続
 
-    `docker exec -it -u sandbox sandbox_ubuntu bash -c "cd ~ && bash"`
+    `docker exec -it bash -c "cd ~ && bash"`
 
 - コンテナ終了
 

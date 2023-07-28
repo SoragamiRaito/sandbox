@@ -22,11 +22,9 @@ if docker ps -a --format "{{.Names}}" | grep -q "^${CONTAINER_NAME}$"; then
   fi
 else
   # コンテナを起動
-  docker run -d --name "${CONTAINER_NAME}" "${IMAGE_NAME}:${IMAGE_TAG}"
+  docker run -d --name "${CONTAINER_NAME}" -v "$(pwd)"/files:/root/files "${IMAGE_NAME}:${IMAGE_TAG}"
   echo "Container '${CONTAINER_NAME}' has been started."
 fi
 
 # コンテナ接続
-docker exec -it ${CONTAINER_NAME} bash
-# dont't use add user
-#docker exec -it -u sandbox ${CONTAINER_NAME} bash -c "cd ~ && bash"
+docker exec -it ${CONTAINER_NAME} bash -c "cd ~ && bash"
