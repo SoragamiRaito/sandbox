@@ -1,0 +1,5 @@
+{
+  "name": "sandbox",
+  "dockerFile": "Dockerfile",
+  "remoteUser": "sandbox"
+}
