@@ -1,5 +1,6 @@
 {
   "name": "sandbox",
-  "dockerFile": "Dockerfile",
+  "dockerFile": "../Dockerfile",
+  "workspaceFolder": "../workspace",
   "remoteUser": "sandbox"
 }
