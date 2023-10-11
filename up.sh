@@ -1,34 +1,32 @@
 #!/bin/bash
 
-# Dockerイメージの名前とタグ
-IMAGE_NAME="sandbox_ubuntu_image"
-IMAGE_TAG="latest"
+# イメージとコンテナの名前を定義
+IMAGE_NAME=sandbox_ubuntu_image
+CONTAINER_NAME=sandbox_ubuntu
 
-# コンテナの名前
-CONTAINER_NAME="sandbox_ubuntu"
+# ホスト側のUIDとGIDを取得
+HOST_USER_ID=$(id -u)
+HOST_GROUP_ID=$(id -g)
 
-if docker images --format "{{.Repository}}" | grep -q "^${IMAGE_NAME}$"; then
-  echo "The image already exists."
+# Dockerイメージをビルド
+if [[ "$(docker images -q $IMAGE_NAME 2> /dev/null)" == "" ]]; then
+  # イメージが存在しない場合、新たにビルド
+  docker build --build-arg USER_ID=$HOST_USER_ID --build-arg GROUP_ID=$HOST_GROUP_ID -t $IMAGE_NAME .
 else
-  echo "The image does not exist, performing the build..."
-  . ./build.sh
+  # イメージが存在する場合、キャッシュを無効化してビルド
+  docker build --build-arg USER_ID=$HOST_USER_ID --build-arg GROUP_ID=$HOST_GROUP_ID --no-cache -t $IMAGE_NAME .
 fi
 
-# コンテナが既に起動しているかを確認
-if docker ps -a --format "{{.Names}}" | grep -q "^${CONTAINER_NAME}$"; then
-  echo "Container '${CONTAINER_NAME}' is already running."
-  if docker ps -f name="${CONTAINER_NAME}" -f status=exited | grep -q "^${CONTAINER_NAME}$"; then
-    docker start "${CONTAINER_NAME}"
-    echo "Container '${CONTAINER_NAME}' has been started."
-  else
-    echo "Container '${CONTAINER_NAME}' is not in an exited state."
+# コンテナの状態を確認し、起動または再開
+if [[ "$(docker ps -q -f name=$CONTAINER_NAME)" == "" ]]; then
+  # コンテナが起動していない場合、新たに起動
+  docker run -d --name $CONTAINER_NAME $IMAGE_NAME
+else
+  if [[ "$(docker ps -q -f status=exited -f name=$CONTAINER_NAME)" != "" ]]; then
+    # コンテナが停止している場合、再開
+    docker start $CONTAINER_NAME
   fi
-else
-  # コンテナを起動
-  docker run -d --name "${CONTAINER_NAME}"  "${IMAGE_NAME}:${IMAGE_TAG}"
-  echo "Container '${CONTAINER_NAME}' has been started."
 fi
 
-
-# コンテナ接続
-docker exec -it ${CONTAINER_NAME} bash -l -c "su - sandbox"
+# コンテナに接続
+docker exec -it $CONTAINER_NAME /bin/bash
