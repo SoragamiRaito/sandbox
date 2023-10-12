@@ -29,4 +29,4 @@ else
 fi
 
 # コンテナに接続
-docker exec -it $CONTAINER_NAME /bin/bash
+docker exec -it -u sandbox $CONTAINER_NAME /bin/bash
