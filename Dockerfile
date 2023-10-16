@@ -18,6 +18,9 @@ RUN groupadd -g ${GROUP_ID} sandbox && useradd -u ${USER_ID} -g ${GROUP_ID} -m s
     usermod -aG sudo sandbox && \
     chsh -s /bin/bash sandbox
 
+# Allow sudo without password for the user
+RUN echo "sandbox ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+
 # Install Visual Studio Code Server
 USER sandbox
 RUN curl -fsSL https://code-server.dev/install.sh | sh
