@@ -8,13 +8,10 @@ CONTAINER_NAME=sandbox_ubuntu
 HOST_USER_ID=$(id -u)
 HOST_GROUP_ID=$(id -g)
 
-# Dockerイメージをビルド
-if [[ "$(docker images -q $IMAGE_NAME 2> /dev/null)" == "" ]]; then
-  # イメージが存在しない場合、新たにビルド
+# イメージが存在しない場合、またはDockerfileに変更がある場合、新たにビルド
+if [[ "$(docker images -q $IMAGE_NAME 2> /dev/null)" == "" || Dockerfile -nt .dockerimage ]]; then
   docker build --build-arg USER_ID=$HOST_USER_ID --build-arg GROUP_ID=$HOST_GROUP_ID -t $IMAGE_NAME .
-else
-  # イメージが存在する場合、キャッシュを無効化してビルド
-  docker build --build-arg USER_ID=$HOST_USER_ID --build-arg GROUP_ID=$HOST_GROUP_ID --no-cache -t $IMAGE_NAME .
+  touch .dockerimage
 fi
 
 # コンテナの状態を確認し、起動または再開
@@ -28,5 +25,5 @@ else
   fi
 fi
 
-# コンテナに接続
-docker exec -it -u sandbox $CONTAINER_NAME /bin/bash
+# コンテナに接続し、コンテナ内でcdコマンドを実行
+docker exec -it -u sandbox $CONTAINER_NAME /bin/bash -c "cd ~ && /bin/bash"
