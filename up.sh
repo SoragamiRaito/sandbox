@@ -4,6 +4,21 @@
 IMAGE_NAME=sandbox_ubuntu_image
 CONTAINER_NAME=sandbox_ubuntu
 
+while getopts "i:c:" opt; do
+  case $opt in
+    i)
+      IMAGE_NAME="$OPTARG"
+      ;;
+    c)
+      CONTAINER_NAME="$OPTARG"
+      ;;
+    \?)
+      echo "Invalid option: -$OPTARG" >&2
+      exit 1
+      ;;
+  esac
+done
+
 # ホスト側のUIDとGIDを取得
 HOST_USER_ID=$(id -u)
 HOST_GROUP_ID=$(id -g)
