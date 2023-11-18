@@ -4,18 +4,21 @@
 IMAGE_NAME=sandbox_ubuntu_image
 CONTAINER_NAME=sandbox_ubuntu
 
-while getopts "i:c:" opt; do
+while getopts "i:c:v" opt; do
   case $opt in
-  i)
-    IMAGE_NAME="$OPTARG"
-    ;;
-  c)
-    CONTAINER_NAME="$OPTARG"
-    ;;
-  \?)
-    echo "Invalid option: -$OPTARG" >&2
-    exit 1
-    ;;
+    i)
+      IMAGE_NAME="$OPTARG"
+      ;;
+    c)
+      CONTAINER_NAME="$OPTARG"
+      ;;
+# コンテナ内にworkspaceディレクトリをバインドするようにする。イメージのビルドやコンテナの起動関数も変更する。
+    v)
+      VIND="$OPTARG"
+    \?)
+      echo "Invalid option: -$OPTARG" >&2
+      exit 1
+      ;;
   esac
 done
 
