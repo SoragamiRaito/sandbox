@@ -15,7 +15,8 @@ while getopts "i:c:v" opt; do
 # コンテナ内にworkspaceディレクトリをバインドするようにする。イメージのビルドやコンテナの起動関数も変更する。
     v)
       VIND="$OPTARG"
-    \?)
+      ;;
+    ?)
       echo "Invalid option: -$OPTARG" >&2
       exit 1
       ;;
@@ -33,11 +34,15 @@ if [[ "$(docker images -q "$IMAGE_NAME" 2>/dev/null)" == "" || Dockerfile -nt .d
 fi
 
 # コンテナの状態を確認し、起動または再開
-if [[ "$(docker ps -q -f name="$CONTAINER_NAME")" == "" ]]; then
+if [[ "$(docker ps -q -f name="^$CONTAINER_NAME&")" == "" ]]; then
+  if [[ "VIND" ]]; then
+  docker run -v "$VIND" -d --name "^$CONTAINER_NAME&" "$IMAGE_NAME"
+  else
   # コンテナが起動していない場合、新たに起動
-  docker run -d --name "$CONTAINER_NAME" "$IMAGE_NAME"
+  docker run -d --name "^$CONTAINER_NAME&" "$IMAGE_NAME"
+  fi
 else
-  if [[ "$(docker ps -q -f status=exited -f name="$CONTAINER_NAME")" != "" ]]; then
+  if [[ "$(docker ps -q -f status=exited -f name="^$CONTAINER_NAME&")" != "" ]]; then
     # コンテナが停止している場合、再開
     docker start "$CONTAINER_NAME"
   fi
