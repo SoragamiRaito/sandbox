@@ -3,8 +3,9 @@
 # イメージとコンテナの名前を定義
 IMAGE_NAME=sandbox_ubuntu_image
 CONTAINER_NAME=sandbox_ubuntu
+BACK="no"
 
-while getopts "i:c:v" opt; do
+while getopts "i:c:v:b" opt; do
   case $opt in
     i)
       IMAGE_NAME="$OPTARG"
@@ -48,5 +49,7 @@ else
   fi
 fi
 
-# コンテナに接続し、コンテナ内でcdコマンドを実行
-docker exec -it -u sandbox "$CONTAINER_NAME" /bin/bash -c "cd ~ && /bin/bash"
+# -bオプションが指定されていない場合のみコンテナに接続し、コンテナ内でcdコマンドを実行
+if [[ "$BACK" == "no" ]]; then
+  docker exec -it -u sandbox "$CONTAINER_NAME" /bin/bash -c "cd ~ && /bin/bash"
+fi
