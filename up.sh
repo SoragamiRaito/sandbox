@@ -18,7 +18,7 @@ while getopts "i:c:v:b" opt; do
     VIND="$OPTARG"
     ;;
   b)
-    BUILD="yes"
+    BACK="yes"
     ;;
   \?)
     echo "Invalid option: -$OPTARG" >&2
@@ -37,7 +37,7 @@ if [[ "$BUILD" == "yes" ]]; then
 fi
 
 # コンテナの状態を確認し、起動または再開
-if [[ "$(docker ps -q -f name="^$CONTAINER_NAME\$")" == "" ]]; then
+if [[ "$(docker ps -a -q -f name="$CONTAINER_NAME")" == "" ]]; then
   # コンテナが起動していない場合、新たに起動
   if [[ -n "$VIND" ]]; then
     # -vオプションが指定されている場合
@@ -46,7 +46,7 @@ if [[ "$(docker ps -q -f name="^$CONTAINER_NAME\$")" == "" ]]; then
     # -vオプションが指定されていない場合
     docker run -d --name "$CONTAINER_NAME" "$IMAGE_NAME"
   fi
-elif [[ "$(docker ps -q -f status=exited -f name="^$CONTAINER_NAME\$")" != "" ]]; then
+elif [[ "$(docker ps -a -q -f status=exited -f name="^$CONTAINER_NAME\$")" != "" ]]; then
   # コンテナが停止している場合、再開
   docker start "$CONTAINER_NAME"
 fi
