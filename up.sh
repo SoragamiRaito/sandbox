@@ -3,7 +3,7 @@
 # イメージとコンテナの名前を定義
 IMAGE_NAME=sandbox_ubuntu_image
 CONTAINER_NAME=sandbox_ubuntu
-BUILD="no"
+BACK="no"
 
 while getopts "i:c:v:b" opt; do
   case $opt in
@@ -46,9 +46,12 @@ if [[ "$(docker ps -a -q -f name="$CONTAINER_NAME")" == "" ]]; then
     # -vオプションが指定されていない場合
     docker run -d --name "$CONTAINER_NAME" "$IMAGE_NAME"
   fi
-elif [[ "$(docker ps -a -q -f status=exited -f name="^$CONTAINER_NAME\$")" != "" ]]; then
+elif [[ "$(docker ps -a -a -q -f status=exited -f name="^$CONTAINER_NAME\$")" != "" ]]; then
   # コンテナが停止している場合、再開
   docker start "$CONTAINER_NAME"
 fi
 
-docker exec -it -u sandbox "$CONTAINER_NAME" /bin/bash -c "cd ~ && /bin/bash"
+# -bオプションが指定されていない場合のみコンテナに接続し、コンテナ内でcdコマンドを実行
+if [[ "$BACK" == "no" ]]; then
+  docker exec -it -u sandbox "$CONTAINER_NAME" /bin/bash -c "cd ~ && /bin/bash"
+fi
