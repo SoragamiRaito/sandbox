@@ -5,7 +5,7 @@ git config --global user.email "soragamiraito@gmail.com"
 git config --global user.name "SoragamiRaito"
 
 # loginshellの変更
-sudo chsh -s $(which zsh)
+sudo chsh -s "$(which zsh)"
 
 # starshipの導入
 echo 'eval "$(starship init bash)"' >>~/.bashrc
