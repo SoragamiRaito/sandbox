@@ -5,8 +5,6 @@ format = """
 $shell\
 [󰇙](fg:text)\
 $username\
--\
-[ mi221336 ](fg:pink)\
 [󰇙](fg:text)\
 $directory\
 [󰇙](fg:text)\
