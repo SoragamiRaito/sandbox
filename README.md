@@ -1,10 +1,11 @@
 # sandbox
 
-砂場。  
-なんとなくお試しでいろいろやって見る場所。  
+砂場。
+なんとなくお試しでいろいろやって見る場所。
 ちゃんとdocker使っていきたいとは思っている。
 
 ## 使い方
+
 - イメージのビルド
 
     `./build.sh`
@@ -14,6 +15,7 @@
     `./up.sh`
 
 ## dockerコマンドチートシート
+
 - コンテナ起動
 
     `docker run -d --name "sandbox_ubuntu" sandbox_ubuntu_image`

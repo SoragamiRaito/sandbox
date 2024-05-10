@@ -13,7 +13,7 @@ while getopts "i:c:v:b" opt; do
   c)
     CONTAINER_NAME="$OPTARG"
     ;;
-  # コンテナ内にshareディレクトリをバインドするようにする。イメージのビルドやコンテナの起動関数も変更する。
+    # コンテナ内にworkspaceディレクトリをバインドするようにする。イメージのビルドやコンテナの起動関数も変更する。
   v)
     VIND="$OPTARG"
     ;;

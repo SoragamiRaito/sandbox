@@ -22,10 +22,8 @@ RUN groupadd -g ${GROUP_ID} sandbox && useradd -u ${USER_ID} -g ${GROUP_ID} -m s
 RUN echo "sandbox ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
 # Install Visual Studio Code Server
-RUN curl -fsSL https://code-server.dev/install.sh | sh
-
-# setting default user
 USER sandbox
+RUN curl -fsSL https://code-server.dev/install.sh | sh
 
 # Using "sleep infinity" for container persistence
 CMD [ "sleep", "infinity" ]
