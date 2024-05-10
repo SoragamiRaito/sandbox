@@ -2,8 +2,8 @@
     "name": "sandbox",
     "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
     "remoteUser": "vscode",
-    "workspaceFolder": "/home/workspace",
-    "workspaceMount": "source=${localWorkspaceFolder},target=/home/workspace,type=bind,consistency=cached",
+    "workspaceFolder": "/home/vscode/workspace",
+    "workspaceMount": "source=${localWorkspaceFolder},target=/home/vscode/workspace,type=bind,consistency=cached",
     "mounts": [],
     "postCreateCommand": "sh .devcontainer/post-create.sh",
     "features": {
