@@ -1,16 +1,23 @@
 {
     "name": "sandbox",
-    "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+    // "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+    "build": {
+        "dockerfile": "Dockerfile",
+        "context": "."
+    },
     "remoteUser": "vscode",
     "workspaceFolder": "/home/vscode/workspace",
-    "workspaceMount": "source=${localWorkspaceFolder},target=/home/vscode/workspace,type=bind,consistency=cached",
+    "workspaceMount": "source=${localWorkspaceFolder}/workspace,target=/home/vscode/workspace,type=bind,consistency=cached",
     "mounts": [],
-    "postCreateCommand": "sh .devcontainer/post-create.sh",
+    "postCreateCommand": "",
     "features": {
         "ghcr.io/devcontainers/features/github-cli:1": {}
     },
     "customizations": {
         "vscode": {
+            "settings": {
+                "terminal.integrated.defaultProfile.linux": "zsh"
+            },
             "extensions": [
                 "streetsidesoftware.code-spell-checker",
                 "formulahendry.code-runner",
