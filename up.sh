@@ -4,8 +4,9 @@
 IMAGE_NAME=sandbox_ubuntu_image
 CONTAINER_NAME=sandbox_ubuntu
 BACK="no"
+BUILD="no"
 
-while getopts "i:c:v:b" opt; do
+while getopts "i:c:v:b:r" opt; do
   case $opt in
   i)
     IMAGE_NAME="$OPTARG"
@@ -20,6 +21,9 @@ while getopts "i:c:v:b" opt; do
   b)
     BACK="yes"
     ;;
+  r)
+    BUILD="yes"
+    ;;
   \?)
     echo "Invalid option: -$OPTARG" >&2
     exit 1
@@ -31,9 +35,21 @@ done
 HOST_USER_ID=$(id -u)
 HOST_GROUP_ID=$(id -g)
 
-# -bオプションがついている場合ビルド
+# イメージが見つからない場合ビルドフラグを変更
+if ! docker image inspect "$IMAGE_NAME" >/dev/null 2>&1; then
+  echo "Can not fined '$IMAGE_NAME'. Building image..."
+  BUILD="yes"
+fi
+
+# ビルド
 if [[ "$BUILD" == "yes" ]]; then
   docker build --build-arg USER_ID="$HOST_USER_ID" --build-arg GROUP_ID="$HOST_GROUP_ID" -t "$IMAGE_NAME" .
+  if [ $? -eq 0 ]; then
+    echo "image '$IMAGE_NAME' is built."
+  else
+    echo "failed building image."
+    exit 1
+  fi
 fi
 
 # コンテナの状態を確認し、起動または再開
